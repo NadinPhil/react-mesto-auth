@@ -1,0 +1,15 @@
+.profile__edit-container{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 120px;
+}
+.profile__edit-container:hover{
+    opacity:0.8;
+    background-color:#000;
+    cursor: pointer;
+    background-image: url(../../../images/Pen.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}

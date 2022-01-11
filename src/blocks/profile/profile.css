@@ -1,0 +1,16 @@
+.profile{
+    margin: 36.25px 200px 0 200px;
+    display: flex;
+    align-items: center;
+}
+@media (max-width: 1000px){
+    .profile{
+        margin: 36.25px 100px 0 100px;
+    }
+}
+@media (max-width: 700px){
+    .profile{
+        margin: 38.25px 19px 36px;
+        flex-direction: column;
+    }
+}

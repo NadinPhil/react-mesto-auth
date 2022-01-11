@@ -1,0 +1,27 @@
+.elements-grid__like{
+    background-image: url(../../../images/whiteHeart.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 22px;
+    height: 19px;
+    border: none;
+    box-sizing: border-box;
+    background-color: white;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+@media (max-width: 950px){
+    .elements-grid__like{
+        width: 21px;
+        height: 17px;
+    }
+}
+@media (max-width: 320px){
+    .elements-grid__like{
+        width: 22px;
+        height: 19px;
+    }
+}
+.elements-grid__like:hover{
+    opacity: 0.5;
+}

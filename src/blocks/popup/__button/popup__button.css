@@ -1,0 +1,25 @@
+.popup__button{
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    right:-40px;
+    top: -40px;
+    border: none;
+    background:none;
+    background-image: url(../../../images/CloseIconOne.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+}
+.popup__button:hover{
+    opacity: 0.6;
+}
+@media (max-width:510px){
+    .popup__button{
+        width: 20px;
+        height: 20px;
+        top: -36px;
+        right:0px;
+    }
+}

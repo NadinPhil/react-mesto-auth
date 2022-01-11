@@ -1,0 +1,33 @@
+.profile__add{
+    width: 150px;
+    height: 50px;
+    border: 2px solid #FFFFFF;
+    border-radius: 2px;
+    background-image: url(../../../images/plus.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: black;
+    cursor: pointer;
+}
+.profile__add:hover{
+    opacity: 0.6;
+}
+@media (max-width: 900px){
+    .profile__add{
+        width: 120px;
+        height: 40px;
+    }
+}
+@media (max-width: 750px){
+    .profile__add{
+        width: 250px;
+        height: 45px;
+    }
+}
+@media (max-width: 320px){
+    .profile__add{
+        width: 282px;
+        height: 50px;
+        background-image: url(../../../images/VectorFour.svg);
+    }
+}

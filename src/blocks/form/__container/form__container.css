@@ -1,0 +1,8 @@
+.form__container{
+    padding: 34px 36px 37px 36px;
+}
+@media (max-width: 320px){
+    .form__container{
+        padding: 25px 22px 25px 22px;
+    }
+}

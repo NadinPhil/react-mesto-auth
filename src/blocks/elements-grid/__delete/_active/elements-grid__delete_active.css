@@ -1,0 +1,6 @@
+.elements-grid__delete_active{
+    opacity: 1;
+}
+.elements-grid__delete_active:hover{
+    opacity: 0.6;
+}

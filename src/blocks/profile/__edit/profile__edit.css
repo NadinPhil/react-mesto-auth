@@ -1,0 +1,22 @@
+.profile__edit{
+    width: 24px;
+    height: 24px;
+    border: 1px solid #FFFFFF;
+    margin-left: 18px;
+    margin-right: 18px;
+    background-image: url(../../../images/VectorThree.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: black;
+    cursor: pointer;
+}
+.profile__edit:hover{
+    opacity: 0.6;
+}
+@media (max-width: 320px){
+    .profile__edit{
+        margin-left: 10px;
+        width: 18px;
+        height: 18px;
+    }
+}

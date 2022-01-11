@@ -1,0 +1,4 @@
+.form__input_invalid{
+    border-bottom: 2px solid red;
+    margin-bottom: 5px;
+}

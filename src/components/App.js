@@ -38,6 +38,7 @@ function closeAllPopups(){
 
   return (
     <div className="page">
+      <div className="page__container">
       <Header />
       <Main 
       onEditProfile={handleEditProfileClick} 
@@ -46,37 +47,34 @@ function closeAllPopups(){
       onCardClick={handleCardClick}
       />
       <Footer />
-      <PopupWithForm name="edit" title="Редактировать профиль" onClose={closeAllPopups} isOpen={isEditProfilePopupOpen} >
+      <PopupWithForm name="edit" title="Редактировать профиль" onClose={closeAllPopups} isOpen={isEditProfilePopupOpen} buttonText={'Сохранить'} >
         <label className="popup__label">
           <input type="text" name="name" defaultValue="" className="form__input form__input_text_title" required placeholder="Ваше имя" id="name" minLength="2" maxLength="40"/>
           <span id="name-error" className="error"></span>
           <input type="text" name="about" defaultValue="" className="form__input form__input_text_subtitle" required placeholder="Ваша деятельность" id="job" minLength="2" maxLength="200"/>
           <span id="job-error" className="error"></span>
-          <button type="submit" className="form__button">Сохранить</button>
         </label>
       </PopupWithForm>
-      <PopupWithForm name="add" title="Новое место" onClose={closeAllPopups} isOpen={isAddPlacePopupOpen}>
+      <PopupWithForm name="add" title="Новое место" onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} buttonText={'Создать'}>
         <label className="popup__label">
           <input type="text" name="name" defaultValue="" className="form__input form__input_text_name" required placeholder="Название" id="picture" minLength="2" maxLength="30"/>
           <span id="picture-error" className="error"></span>
           <input type="url" name="link" defaultValue="" className="form__input form__input_text_link" required placeholder="Ссылка на картинку" id="link"/>
           <span id="link-error" className="error"></span>
-          <button type="submit" className="form__button">Создать</button>
         </label>
       </PopupWithForm>
-      <PopupWithForm name="avatar" title="Обновить аватар" onClose={closeAllPopups} isOpen={isEditAvatarPopupOpen} >
+      <PopupWithForm name="avatar" title="Обновить аватар" onClose={closeAllPopups} isOpen={isEditAvatarPopupOpen} buttonText={'Сохранить'}>
         <label className="popup__label">
           <input type="url" name="avatar" defaultValue="" className="form__input form__input_text_link" required placeholder="Ссылка на картинку" id="avatar"/>
           <span id="avatar-error" className="error"></span>
-          <button type="submit" className="form__button">Сохранить</button>
         </label>
       </PopupWithForm>
-      <PopupWithForm name="delete" title="Вы уверены?">
+      <PopupWithForm name="delete" title="Вы уверены?" buttonText={'Да'}>
         <label className="popup__label">
-          <button type="submit" className="form__button">Да</button>
         </label>
       </PopupWithForm>
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+      </div>
     </div>
     
   );

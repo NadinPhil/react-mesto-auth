@@ -15,6 +15,7 @@ function Main(props) {
             setuserDescription(data.about)
             setUserAvatar(data.avatar)
         })
+        .catch((err) => console.log(`Ошибка: ${err}`)) 
   
         api.getAllCards()
         .then (data => {
@@ -28,7 +29,8 @@ function Main(props) {
         })
         setCards(cards)
         })
-    });
+        .catch((err) => console.log(`Ошибка: ${err}`)) 
+    }, []);
     
     
     return (

@@ -5,6 +5,9 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import api from '../utils/api.js';
+import EditProfilePopup from './EditProfilePopup.js';
 
 function App() {
   
@@ -35,8 +38,27 @@ function closeAllPopups(){
   setAddPlacePopupOpen(false)
   setSelectedCard({name:'', link:''})
 }
+function handleUpdateUser(){
+  api.editUserInfo()
+  .then (data => { 
+    setCurrentUser(data)
+  })
+  .catch((err) => console.log(`Ошибка: ${err}`)) 
+  closeAllPopups()
+}
+
+const [currentUser, setCurrentUser] = React.useState({});
+
+React.useEffect(() => {
+  api.getUserInfo()
+  .then (data => { 
+    setCurrentUser(data)
+  })
+  .catch((err) => console.log(`Ошибка: ${err}`)) 
+}, [])
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
       <div className="page__container">
       <Header />
@@ -47,14 +69,7 @@ function closeAllPopups(){
       onCardClick={handleCardClick}
       />
       <Footer />
-      <PopupWithForm name="edit" title="Редактировать профиль" onClose={closeAllPopups} isOpen={isEditProfilePopupOpen} buttonText={'Сохранить'} >
-        <label className="popup__label">
-          <input type="text" name="name" defaultValue="" className="form__input form__input_text_title" required placeholder="Ваше имя" id="name" minLength="2" maxLength="40"/>
-          <span id="name-error" className="error"></span>
-          <input type="text" name="about" defaultValue="" className="form__input form__input_text_subtitle" required placeholder="Ваша деятельность" id="job" minLength="2" maxLength="200"/>
-          <span id="job-error" className="error"></span>
-        </label>
-      </PopupWithForm>
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/> 
       <PopupWithForm name="add" title="Новое место" onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} buttonText={'Создать'}>
         <label className="popup__label">
           <input type="text" name="name" defaultValue="" className="form__input form__input_text_name" required placeholder="Название" id="picture" minLength="2" maxLength="30"/>
@@ -76,7 +91,7 @@ function closeAllPopups(){
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
       </div>
     </div>
-    
+    </CurrentUserContext.Provider> 
   );
 }
 export default App;

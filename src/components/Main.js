@@ -1,22 +1,14 @@
 import React from 'react';
 import api from '../utils/api.js';
-import Card from './Card.js'
+import Card from './Card.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main(props) {
-    const [userName, setUserName] = React.useState('слон');
-    const [userDescription, setuserDescription] = React.useState('окно');
-    const [userAvatar, setUserAvatar] = React.useState('');
+    //debugger
     const [cards, setCards] = React.useState([]);
-
+    const currentUser = React.useContext(CurrentUserContext);
+    
     React.useEffect(() => {
-        api.getUserInfo()
-        .then (data => { 
-            setUserName(data.name)
-            setuserDescription(data.about)
-            setUserAvatar(data.avatar)
-        })
-        .catch((err) => console.log(`Ошибка: ${err}`)) 
-  
         api.getAllCards()
         .then (data => {
             const cards = data.map(item => {
@@ -24,7 +16,8 @@ function Main(props) {
                id: item._id,
                link: item.link,
                name: item.name,
-               likes: item.likes.length
+               //length: item.likes.length,
+               likes: item.likes
              } 
         })
         setCards(cards)
@@ -32,19 +25,30 @@ function Main(props) {
         .catch((err) => console.log(`Ошибка: ${err}`)) 
     }, []);
     
+    function handleCardLike(card) {
+        // Снова проверяем, есть ли уже лайк на этой карточке
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        
+        // Отправляем запрос в API и получаем обновлённые данные карточки
+        api.changeLikeCardStatus(isLiked, card.id)
+        .then((newCard) => {
+            setCards((state) => state.map((c) => c.id === card.id ? newCard : c));
+        });
+        //debugger
+    }
     
     return (
       <>
       <main className="content">
           <section className="profile">
               <div className="profile__avatar-container">
-              <img className="profile__avatar" src={userAvatar} alt="Аватар"/>
+              <img className="profile__avatar" src={currentUser.avatar} alt="Аватар"/>
               <div className="profile__edit-container" onClick={props.onEditAvatar}></div>
               </div>
               <div className="profile__info">
                   <div className="profile__flex">
-                      <h1 className="profile__title">{userName}</h1>
-                      <p className="profile__subtitle">{userDescription}</p>
+                      <h1 className="profile__title">{currentUser.name}</h1>
+                      <p className="profile__subtitle">{currentUser.about}</p>
                   </div>
                   <button className="profile__edit" type="button" onClick={props.onEditProfile}></button>
               </div>
@@ -58,9 +62,10 @@ function Main(props) {
                     key={card.id}
                     cardName={card.name}
                     cardLink={card.link}
-                    cardLikes={card.likes}
+                    cardLikes={card.likes.length}
                     onCardClick={props.onCardClick}
                     card={card}
+                    onCardLike={handleCardLike}
                     />  
                 )})}    
               </ul>

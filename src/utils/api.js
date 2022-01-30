@@ -48,6 +48,15 @@ removeCardLike(cardId){
     .then(this._checkResponse)
      
     }
+   
+changeLikeCardStatus(isLiked, cardId){
+    return fetch ( `${this._url}/cards/likes/${cardId}`, {
+        method: `${isLiked ? "DELETE" : "PUT"}`,
+        headers:  this._headers,
+    })
+    .then(this._checkResponse)
+     
+    }   
     
 //добавление карточки
 addCard(data){

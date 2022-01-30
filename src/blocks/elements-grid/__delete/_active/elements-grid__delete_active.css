@@ -1,5 +1,17 @@
 .elements-grid__delete_active{
     opacity: 1;
+    position: absolute;
+    right: 15px;
+    top: 18px;
+    padding: 0;
+    width: 18px;
+    height: 19.3px;
+    border: none;
+    background: none;
+    background-image: url(../../../../images/Group.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
 }
 .elements-grid__delete_active:hover{
     opacity: 0.6;

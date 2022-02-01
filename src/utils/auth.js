@@ -9,13 +9,9 @@ export const register = (email, password ) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then((response) => {
-    return response.json();
-  })
-  .then((res) => {
-    return res;
-  })
-  .catch((err) => console.log(err));
+  .then((response) => checkResponse(response))
+  .then((res) => res) 
+  
 };
 
 export const authorize = (email, password) => {
@@ -27,8 +23,7 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then((response => response.json()))
-  .catch(err => console.log(err))
+  .then((response) => checkResponse(response)) 
 };
 
 export const checkToken = (token) => {
@@ -40,6 +35,13 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then(res => res.json())
+  .then((response) => checkResponse(response))
   .then(data => data)
+}
+
+const checkResponse = (res) => {
+  if (res.ok) {
+      return res.json();
+  }
+return Promise.reject('Сервер не доступен')
 }

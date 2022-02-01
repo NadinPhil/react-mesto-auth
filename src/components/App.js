@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
-import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import api from '../utils/api.js';
@@ -15,7 +14,7 @@ import ProtectedRoute from './ProtectedRoute.js';
 import Register from './Register.js'
 import Login from './Login.js'
 import InfoTooltip from './InfoTooltip.js'
-import * as auth from "../auth.js";
+import * as auth from "../utils/auth.js";
 
 function App() {
 
@@ -24,27 +23,31 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [cards, setCards] = React.useState([]);
-
+  const [currentUser, setCurrentUser] = React.useState({});
   const [email, setEmail] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [infoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
-  const [infoTooltip, setInfoTooltip] = React.useState();
+  const [infoTooltip, setInfoTooltip] = React.useState(false);
 
   useEffect(() => {
-    handleTokenCheck(location.pathname);
+    handleTokenCheck('/');
   }, []);
 
   // проверяем токен пользователя
   function handleTokenCheck(path) {
-    if (localStorage.getItem('jwt')) {
+    if (!loggedIn && localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem('jwt');
-      auth.checkToken(jwt).then((res) => {
+      auth.checkToken(jwt)
+      .then((res) => {
         if (res) {
           setLoggedIn(true);
           navigate(path);
         }
+      })
+      .catch((err) => {
+      console.log(err);
       });
     }
   };
@@ -105,10 +108,11 @@ function App() {
 
   // РАБОТА С КАРТОЧКАМИ
   React.useEffect(() => {
+    if (loggedIn) {
     api.getAllCards()
       .then(cards => { setCards(cards) })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-  }, []);
+      .catch((err) => console.log(`Ошибка: ${err}`))}
+  }, [loggedIn]);
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -172,15 +176,19 @@ function App() {
       .catch((err) => console.log(`Ошибка: ${err}`))
   }
 
-  const [currentUser, setCurrentUser] = React.useState({});
-
-  React.useEffect((data) => {
-    api.getUserInfo(data)
-      .then(data => {
-        setCurrentUser(data)
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`))
-  }, [])
+  React.useEffect(() => { 
+    Promise.all([ //в Promise.all передаем массив промисов которые нужно выполнить
+     api.getUserInfo(),
+     api.getAllCards()
+ ])
+    .then(([user, cards])=>{ //попадаем сюда, когда оба промиса будут выполнены
+       setCurrentUser(user)// 
+       setCards(cards)        // у нас есть все нужные данные, отрисовываем страницу
+     })
+     .catch((err)=>{ //попадаем сюда, если один из промисов завершаться ошибкой
+       console.log(err);
+     })
+ }, []) 
 
 
   return (
@@ -217,7 +225,6 @@ function App() {
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <AddPlacePopup onAddPlace={handleAddPlaceSubmit} onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} />
           <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-          <PopupWithForm name="delete" title="Вы уверены?" buttonText={'Да'} />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <InfoTooltip isOpen={infoTooltipOpen} onClose={closeAllPopups} onInfoTooltip={infoTooltip} />
         </div>

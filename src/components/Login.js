@@ -11,16 +11,12 @@ function Login(props) {
     }));
   };
 
-  async function handleSubmit(e){                                        
+  function handleSubmit(e){                                        
     e.preventDefault();
     if (!values.email || !values.password) {
       return;
     }
     props.onLogin({ password: values.password, email: values.email });
-    await setValues({
-      email: "",
-      password: "",
-    })
   };
 
   return (

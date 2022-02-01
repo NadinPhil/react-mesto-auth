@@ -74,7 +74,6 @@ addCard(data){
 
 //редактирования профиля
 editUserInfo(data){
-    debugger
     return fetch( `${this._url}/users/me`, {
         method: 'PATCH',
         headers:  this._headers,

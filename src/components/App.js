@@ -54,10 +54,15 @@ function App() {
     auth
       .authorize(data.email, data.password)
       .then((res) => {
+        if (res.token) {
         localStorage.setItem('jwt', res.token);
         setLoggedIn(true);
         setEmail(data.email)
         navigate("/");
+        } else {
+          setInfoTooltipOpen(true);
+          setInfoTooltip(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -71,13 +76,16 @@ function App() {
     auth
       .register(data.email, data.password)
       .then((res) => {
-        setInfoTooltipOpen(true);
-        setInfoTooltip(true);
-        if (res.statusCode !== 400) {
+        if (res.data) {
+          setInfoTooltipOpen(true);
+          setInfoTooltip(true);
           setTimeout(() => {
             handleLogin({ password: data.password, email: data.email });
             setInfoTooltipOpen(false);
           }, 2000);
+        } else {
+          setInfoTooltipOpen(true);
+          setInfoTooltip(false);
         }
       })
       .catch((err) => {

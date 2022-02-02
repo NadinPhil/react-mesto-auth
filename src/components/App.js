@@ -43,7 +43,9 @@ function App() {
       .then((res) => {
         if (res) {
           setLoggedIn(true);
+          setEmail(res.data.email)
           navigate(path);
+          console.log(res)
         }
       })
       .catch((err) => {
@@ -107,13 +109,6 @@ function App() {
   }
 
   // РАБОТА С КАРТОЧКАМИ
-  React.useEffect(() => {
-    if (loggedIn) {
-    api.getAllCards()
-      .then(cards => { setCards(cards) })
-      .catch((err) => console.log(`Ошибка: ${err}`))}
-  }, [loggedIn]);
-
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeCardStatus(isLiked, card._id)
@@ -175,8 +170,9 @@ function App() {
       })
       .catch((err) => console.log(`Ошибка: ${err}`))
   }
-
+  
   React.useEffect(() => { 
+    if (loggedIn) {
     Promise.all([ //в Promise.all передаем массив промисов которые нужно выполнить
      api.getUserInfo(),
      api.getAllCards()
@@ -187,8 +183,8 @@ function App() {
      })
      .catch((err)=>{ //попадаем сюда, если один из промисов завершаться ошибкой
        console.log(err);
-     })
- }, []) 
+     })}
+ }, [loggedIn]) 
 
 
   return (
